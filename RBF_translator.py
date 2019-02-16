@@ -32,7 +32,7 @@ def right():
 
 def print_char():
     print(chr(mem[pointer]),end=" ")
- """
+"""
 
 
 def end_index_finder(commands):
@@ -47,22 +47,24 @@ def end_index_finder(commands):
 
 
 def bf_main(commands):
+    global translated
     this_index = 0
     loop_begin = []
-    indent = "";
+    ind_count = 0;
     while  this_index < len(commands):
         c = commands[this_index]
         #print(c,end= " ")
+        indent = " " * ind_count
         if (c=="+") :  translated = translated + indent + "plus()\n"
         if (c=="-") :  translated = translated + indent + "minus()\n"
         if (c=="<") :  translated = translated + indent + "left()\n"
         if (c==">") :  translated = translated + indent + "right()\n"
         if (c==".") :  translated = translated + indent + "print_char()\n"
         if (c=="[") :
-            translated = translated + indent + "while mem[poiner] > 0 : \n"
-            indent += " "
+            translated = translated + indent + "while mem[pointer] > 0: \n"
+            ind_count+=1
         if (c=="]") :
-            indent -= " "
+            ind_count-=1
         this_index+=1
 
 def execute(inp_file):
@@ -71,7 +73,7 @@ def execute(inp_file):
     except:
         print("fatal error, file not found")
         exit()
-
+    global translated
     all_input = inp.read()
     meanful_commands = []
     for i in range(len(all_input)):
