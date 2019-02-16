@@ -77,10 +77,16 @@ def execute(inp_file):
     for i in range(len(all_input)):
         if all_input[i] in commands_list : meanful_commands.append(all_input[i])
     bf_main(meanful_commands)
-    
+
 
 
 
 
 if len(sys.argv) == 2: execute(sys.argv[1])
-else: print("Usage:", sys.argv[0], "filename")
+else:
+    print("Usage:", sys.argv[0], "filename")
+    exit()
+translated_file = open("out.py", "w")
+translated_file.write(translated)
+translated_file.close()
+print("output file created in out.py")
