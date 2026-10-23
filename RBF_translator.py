@@ -1,5 +1,6 @@
 import sys
-commands_list = [  "[" , "]" , "<" , ">" , "+" , "-" , "." , "," ]
+
+commands_list = ["[", "]", "<", ">", "+", "-", ".", ","]
 
 translated = """
 
@@ -38,56 +39,58 @@ def print_char():
 def end_index_finder(commands):
     t = 0
     for i in range(len(commands)):
-        if commands[i] == '[': t+=1
-        if commands[i] == ']': t-=1
-        if t==0 :
-            #print("end index is : ",i)
-            return i # todo
-
+        if commands[i] == "[":
+            t += 1
+        if commands[i] == "]":
+            t -= 1
+        if t == 0:
+            # print("end index is : ",i)
+            return i  # todo
 
 
 def bf_main(commands):
     global translated
     this_index = 0
-    loop_begin = []
-    ind_count = 0;
-    while  this_index < len(commands):
+    ind_count = 0
+    while this_index < len(commands):
         c = commands[this_index]
-        #print(c,end= " ")
+        # print(c,end= " ")
         indent = " " * ind_count
-        if (c=="+") :  translated = translated + indent + "plus()\n"
-        if (c=="-") :  translated = translated + indent + "minus()\n"
-        if (c=="<") :  translated = translated + indent + "left()\n"
-        if (c==">") :  translated = translated + indent + "right()\n"
-        if (c==".") :  translated = translated + indent + "print_char()\n"
-        if (c=="[") :
+        if c == "+":
+            translated = translated + indent + "plus()\n"
+        if c == "-":
+            translated = translated + indent + "minus()\n"
+        if c == "<":
+            translated = translated + indent + "left()\n"
+        if c == ">":
+            translated = translated + indent + "right()\n"
+        if c == ".":
+            translated = translated + indent + "print_char()\n"
+        if c == "[":
             translated = translated + indent + "while mem[pointer] > 0: \n"
-            ind_count+=1
-        if (c=="]") :
-            ind_count-=1
-        this_index+=1
+            ind_count += 1
+        if c == "]":
+            ind_count -= 1
+        this_index += 1
+
 
 def execute(inp_file):
-    try:
-        inp = open(inp_file,"r")
-    except:
-        print("fatal error, file not found")
-        exit()
+    inp = open(inp_file, "r")
     global translated
     all_input = inp.read()
     meanful_commands = []
     for i in range(len(all_input)):
-        if all_input[i] in commands_list : meanful_commands.append(all_input[i])
+        if all_input[i] in commands_list:
+            meanful_commands.append(all_input[i])
     bf_main(meanful_commands)
 
 
-
-
-
-if len(sys.argv) == 2: execute(sys.argv[1])
+if len(sys.argv) == 2:
+    execute(sys.argv[1])
 else:
     print("Usage:", sys.argv[0], "filename")
-    exit()
+    sys.exit()
+
 translated_file = open("out.py", "w")
 translated_file.write(translated)
 translated_file.close()
