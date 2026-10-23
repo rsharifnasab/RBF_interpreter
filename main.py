@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import enum
 from collections import defaultdict
 from sys import argv
 
@@ -12,7 +11,7 @@ def tokenize(content):
 
 
 class Machine:
-    def __init__(self, tokens, init_data):
+    def __init__(self, tokens, init_data=None):
         self.data_pointer = 0
         self.tokens = tokens
         self.data = defaultdict(int)
@@ -120,25 +119,32 @@ class Machine:
             self.pc += 1
 
             if self.pc >= len(self.tokens):
-                print("\ndone")
-
                 return
 
     def print(self):
-        for i in range(20):
+        MAX_PRINTING_CELL = 20
+        print("|", end="")
+
+        for i in range(MAX_PRINTING_CELL):
             print(self.data[i], end="|")
+
+            remaining = {j for j, _ in enumerate(self.data) if j > i}
+            if not remaining:
+                break
         print()
 
 
 def main(args):
-    assert len(args) == 2
+    assert 1 <= len(args) <= 2
 
-    with open(args[0]) as f:
+    input_file = args[0]
+    init_data = int(args[1]) if len(args) > 1 else 0
+
+    with open(input_file) as f:
         content = f.read()
         tokens = tokenize(content)
-        m = Machine(tokens, int(args[1]))
+        m = Machine(tokens, init_data)
         m.interpret()
-        m.print()
 
 
 if __name__ == "__main__":
